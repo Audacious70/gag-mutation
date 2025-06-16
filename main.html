@@ -81,6 +81,13 @@
       color: #666;
       text-align: center;
     }
+
+    #customPriceNote {
+      font-size: 0.9em;
+      color: #a00;
+      margin-top: 5px;
+      font-style: italic;
+    }
   </style>
 </head>
 <body class="theme-garden">
@@ -96,7 +103,7 @@
   <h1>Grow a Garden Mutation Calculator</h1>
 
   <label>Select Crop:</label>
-  <select id="cropSelect" onchange="updatePrice()">
+  <select id="cropSelect" onchange="updatePrice()" disabled>
     <option value="0">-- Choose a crop --</option>
     <optgroup label="Common">
       <option value="22">Carrot</option>
@@ -147,11 +154,28 @@
   </select>
   <br /><br />
 
+  <label><input type="checkbox" id="customPriceCheckbox" onchange="toggleCustomPrice(this.checked)" />
+    Custom Price (for unreleased items)
+  </label><br />
+
   <label>Base Crop Price:</label>
-  <input type="number" id="basePrice" value="0" readonly /><br /><br />
+  <input type="number" id="basePrice" value="0" readonly />
+  <input
+    type="number"
+    id="customPriceInput"
+    placeholder="Enter custom price"
+    style="display:none; margin-left:10px; width: 150px;"
+    min="0"
+  />
+  <div id="customPriceNote" style="display:none;">
+    Note: Weight calculation is disabled when using custom price.
+  </div>
+
+  <br /><br />
 
   <label>Weight (kg):</label>
-  <input type="number" id="weight" value="1" /><br /><br />
+  <input type="number" id="weight" value="1" min="1" />
+  <br /><br />
 
   <fieldset>
     <legend>Select Mutations:</legend>
@@ -187,25 +211,65 @@
   <footer>by Audacious7</footer>
 
   <script>
+    const cropSelect = document.getElementById("cropSelect");
+    const basePriceInput = document.getElementById("basePrice");
+    const customPriceCheckbox = document.getElementById("customPriceCheckbox");
+    const customPriceInput = document.getElementById("customPriceInput");
+    const weightInput = document.getElementById("weight");
+    const customPriceNote = document.getElementById("customPriceNote");
+
+    // Enable crop select by default
+    cropSelect.disabled = false;
+
     function updatePrice() {
-      const cropSelect = document.getElementById("cropSelect");
-      const selectedPrice = cropSelect.value;
-      document.getElementById("basePrice").value = selectedPrice;
+      if (customPriceCheckbox.checked) return; // do nothing if custom price is active
+      basePriceInput.value = cropSelect.value;
+    }
+
+    function toggleCustomPrice(enabled) {
+      if (enabled) {
+        customPriceInput.style.display = "inline-block";
+        cropSelect.disabled = true;
+        basePriceInput.value = "";
+        weightInput.disabled = true;
+        customPriceNote.style.display = "block";
+      } else {
+        customPriceInput.style.display = "none";
+        cropSelect.disabled = false;
+        updatePrice();
+        weightInput.disabled = false;
+        customPriceNote.style.display = "none";
+      }
     }
 
     function calculate() {
-      const base = parseFloat(document.getElementById("basePrice").value);
-      const weight = parseFloat(document.getElementById("weight").value);
-      let multiplier = 1;
+      let base = 0;
+      let weight = 1;
+      if (customPriceCheckbox.checked) {
+        base = parseFloat(customPriceInput.value);
+        if (isNaN(base) || base < 0) {
+          alert("Please enter a valid custom price (non-negative number).");
+          return;
+        }
+      } else {
+        base = parseFloat(basePriceInput.value);
+        weight = parseFloat(weightInput.value);
+        if (weight <= 0 || isNaN(weight)) {
+          alert("Please enter a valid weight greater than 0.");
+          return;
+        }
+      }
 
+      let multiplier = 1;
       document.querySelectorAll('input[type=checkbox]').forEach((cb) => {
-        if (cb.checked) multiplier *= Number(cb.value);
+        if (cb !== customPriceCheckbox && cb.checked) multiplier *= Number(cb.value);
       });
 
       const total = base * weight * multiplier;
+      const multiplierText = multiplier > 1 ? ` (×${multiplier} multiplier)` : "";
       document.getElementById(
         "result"
-      ).textContent = `Total Value: ₱${total.toLocaleString()} (×${multiplier} multiplier)`;
+      ).textContent = `Total Value: ₱${total.toLocaleString()}${multiplierText}`;
     }
 
     function changeTheme(themeName) {
@@ -213,8 +277,13 @@
     }
 
     function resetMutations() {
-      document.querySelectorAll('input[type=checkbox]').forEach((cb) => (cb.checked = false));
+      document.querySelectorAll('input[type=checkbox]').forEach((cb) => {
+        if (cb !== customPriceCheckbox) cb.checked = false;
+      });
     }
+
+    // Initialize price on load
+    updatePrice();
   </script>
 </body>
 </html>
