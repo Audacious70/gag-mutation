@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Grow a Garden Mutation Calculator</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    h1, h2 {
+      margin-bottom: 0.5em;
+    }
+
+    fieldset {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    input[type="number"], select {
+      padding: 6px;
+      margin: 4px 0;
+      width: 200px;
+      font-size: 1em;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .theme-light {
+      background: #fefefe;
+      color: #222;
+    }
+
+    .theme-dark {
+      background: #1e1e1e;
+      color: #f8f8f8;
+    }
+
+    .theme-garden {
+      background: #e9f5e9;
+      color: #254d25;
+    }
+
+    .theme-light button {
+      background: #007acc;
+      color: white;
+    }
+
+    .theme-dark button {
+      background: #444;
+      color: white;
+    }
+
+    .theme-garden button {
+      background: #3b923b;
+      color: white;
+    }
+
+    .theme-switcher {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body class="theme-garden">
+  <div class="theme-switcher">
+    <label for="themeSelect">Theme:</label>
+    <select id="themeSelect" onchange="changeTheme(this.value)">
+      <option value="theme-light">Light</option>
+      <option value="theme-dark">Dark</option>
+      <option value="theme-garden" selected>Garden Green</option>
+    </select>
+  </div>
+
+  <h1>Grow a Garden Mutation Calculator</h1>
+
+  <label>Select Crop:</label>
+  <select id="cropSelect" onchange="updatePrice()">
+    <option value="0">-- Choose a crop --</option>
+    <optgroup label="Common">
+      <option value="22">Carrot</option>
+      <option value="19">Strawberry</option>
+    </optgroup>
+    <optgroup label="Uncommon">
+      <option value="21">Blueberry</option>
+      <option value="792">Orange Tulip</option>
+    </optgroup>
+    <optgroup label="Rare">
+      <option value="35">Tomato</option>
+      <option value="44">Corn</option>
+      <option value="988">Daffodil</option>
+      <option value="98">Raspberry</option>
+      <option value="553">Pear</option>
+    </optgroup>
+    <optgroup label="Legendary">
+      <option value="2905">Watermelon</option>
+      <option value="3854">Pumpkin</option>
+      <option value="266">Apple</option>
+      <option value="3944">Bamboo</option>
+    </optgroup>
+    <optgroup label="Mythical">
+      <option value="2670">Coconut</option>
+      <option value="3224">Cactus</option>
+      <option value="4566">Dragon Fruit</option>
+      <option value="6308">Mango</option>
+      <option value="283">Peach</option>
+      <option value="2350">Pineapple</option>
+      <option value="36100">Nectarine</option>
+    </optgroup>
+    <optgroup label="Divine">
+      <option value="7554">Grape</option>
+      <option value="142443">Mushroom</option>
+      <option value="7577">Pepper</option>
+      <option value="10456">Cacao</option>
+      <option value="54125">Hive Fruit</option>
+      <option value="135000">Sunflower</option>
+    </optgroup>
+    <optgroup label="Prismatic">
+      <option value="18788">Beanstalk</option>
+    </optgroup>
+    <optgroup label="Event/Limited">
+      <option value="20300">Moonglow</option>
+      <option value="14100">Starfruit</option>
+      <option value="61300">Moon Mango</option>
+    </optgroup>
+  </select><br><br>
+
+  <label>Base Crop Price:</label>
+  <input type="number" id="basePrice" value="0" readonly><br><br>
+
+  <label>Weight (kg):</label>
+  <input type="number" id="weight" value="1"><br><br>
+
+  <fieldset>
+    <legend>Select Mutations:</legend>
+    <label><input type="checkbox" value="20"> Gold ×20</label><br>
+    <label><input type="checkbox" value="50"> Rainbow ×50</label><br>
+    <label><input type="checkbox" value="2"> Wet ×2</label><br>
+    <label><input type="checkbox" value="2"> Chilled ×2</label><br>
+    <label><input type="checkbox" value="10"> Frozen ×10</label><br>
+    <label><input type="checkbox" value="2"> Moonlit ×2</label><br>
+    <label><input type="checkbox" value="3"> Pollinated ×3</label><br>
+    <label><input type="checkbox" value="4"> Bloodlit ×4</label><br>
+    <label><input type="checkbox" value="5"> HoneyGlazed ×5</label><br>
+    <label><input type="checkbox" value="5"> Plasma ×5</label><br>
+    <label><input type="checkbox" value="5"> Heavenly ×5</label><br>
+    <label><input type="checkbox" value="10"> Cooked ×10</label><br>
+    <label><input type="checkbox" value="25"> Zombified ×25</label><br>
+    <label><input type="checkbox" value="25"> Molten ×25</label><br>
+    <label><input type="checkbox" value="100"> Shocked ×100</label><br>
+    <label><input type="checkbox" value="120"> Celestial ×120</label><br>
+    <label><input type="checkbox" value="125"> Disco ×125</label><br>
+    <label><input type="checkbox" value="125"> Meteoric ×125</label><br>
+    <label><input type="checkbox" value="135"> Voidtouched ×135</label><br>
+    <label><input type="checkbox" value="150"> Dawnbound ×150</label><br>
+  </fieldset><br>
+
+  <button onclick="calculate()">Calculate!</button>
+  <h2 id="result">Total Value: ₱0</h2>
+
+  <script>
+    function updatePrice() {
+      const cropSelect = document.getElementById("cropSelect");
+      const selectedPrice = cropSelect.value;
+      document.getElementById("basePrice").value = selectedPrice;
+    }
+
+    function calculate() {
+      const base = parseFloat(document.getElementById('basePrice').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      let multiplier = 1;
+
+      document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+        if(cb.checked) multiplier *= Number(cb.value);
+      });
+
+      const total = base * weight * multiplier;
+      document.getElementById('result').textContent =
+        `Total Value: ₱${total.toLocaleString()} (×${multiplier} multiplier)`;
+    }
+
+    function changeTheme(themeName) {
+      document.body.className = themeName;
+    }
+  </script>
+</body>
+</html>
