@@ -176,7 +176,10 @@
     <label><input type="checkbox" value="135" /> Voidtouched ×135</label><br />
     <label><input type="checkbox" value="150" /> Dawnbound ×150</label><br />
   </fieldset>
-  <br />
+
+  <button type="button" onclick="resetMutations()" style="margin-top: 10px;">
+    Reset Mutations
+  </button>
 
   <button onclick="calculate()">Calculate!</button>
   <h2 id="result">Total Value: ₱0</h2>
@@ -207,6 +210,10 @@
 
     function changeTheme(themeName) {
       document.body.className = themeName;
+    }
+
+    function resetMutations() {
+      document.querySelectorAll('input[type=checkbox]').forEach((cb) => (cb.checked = false));
     }
   </script>
 </body>
