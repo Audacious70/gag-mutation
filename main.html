@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Grow a Garden Mutation Calculator</title>
   <style>
     body {
@@ -12,7 +12,8 @@
       transition: background 0.5s, color 0.5s;
     }
 
-    h1, h2 {
+    h1,
+    h2 {
       margin-bottom: 0.5em;
     }
 
@@ -23,7 +24,8 @@
       border: 1px solid #ccc;
     }
 
-    input[type="number"], select {
+    input[type="number"],
+    select {
       padding: 6px;
       margin: 4px 0;
       width: 200px;
@@ -71,6 +73,13 @@
 
     .theme-switcher {
       margin-bottom: 15px;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 0.9em;
+      color: #666;
+      text-align: center;
     }
   </style>
 </head>
@@ -135,40 +144,44 @@
       <option value="14100">Starfruit</option>
       <option value="61300">Moon Mango</option>
     </optgroup>
-  </select><br><br>
+  </select>
+  <br /><br />
 
   <label>Base Crop Price:</label>
-  <input type="number" id="basePrice" value="0" readonly><br><br>
+  <input type="number" id="basePrice" value="0" readonly /><br /><br />
 
   <label>Weight (kg):</label>
-  <input type="number" id="weight" value="1"><br><br>
+  <input type="number" id="weight" value="1" /><br /><br />
 
   <fieldset>
     <legend>Select Mutations:</legend>
-    <label><input type="checkbox" value="20"> Gold ×20</label><br>
-    <label><input type="checkbox" value="50"> Rainbow ×50</label><br>
-    <label><input type="checkbox" value="2"> Wet ×2</label><br>
-    <label><input type="checkbox" value="2"> Chilled ×2</label><br>
-    <label><input type="checkbox" value="10"> Frozen ×10</label><br>
-    <label><input type="checkbox" value="2"> Moonlit ×2</label><br>
-    <label><input type="checkbox" value="3"> Pollinated ×3</label><br>
-    <label><input type="checkbox" value="4"> Bloodlit ×4</label><br>
-    <label><input type="checkbox" value="5"> HoneyGlazed ×5</label><br>
-    <label><input type="checkbox" value="5"> Plasma ×5</label><br>
-    <label><input type="checkbox" value="5"> Heavenly ×5</label><br>
-    <label><input type="checkbox" value="10"> Cooked ×10</label><br>
-    <label><input type="checkbox" value="25"> Zombified ×25</label><br>
-    <label><input type="checkbox" value="25"> Molten ×25</label><br>
-    <label><input type="checkbox" value="100"> Shocked ×100</label><br>
-    <label><input type="checkbox" value="120"> Celestial ×120</label><br>
-    <label><input type="checkbox" value="125"> Disco ×125</label><br>
-    <label><input type="checkbox" value="125"> Meteoric ×125</label><br>
-    <label><input type="checkbox" value="135"> Voidtouched ×135</label><br>
-    <label><input type="checkbox" value="150"> Dawnbound ×150</label><br>
-  </fieldset><br>
+    <label><input type="checkbox" value="20" /> Gold ×20</label><br />
+    <label><input type="checkbox" value="50" /> Rainbow ×50</label><br />
+    <label><input type="checkbox" value="2" /> Wet ×2</label><br />
+    <label><input type="checkbox" value="2" /> Chilled ×2</label><br />
+    <label><input type="checkbox" value="10" /> Frozen ×10</label><br />
+    <label><input type="checkbox" value="2" /> Moonlit ×2</label><br />
+    <label><input type="checkbox" value="3" /> Pollinated ×3</label><br />
+    <label><input type="checkbox" value="4" /> Bloodlit ×4</label><br />
+    <label><input type="checkbox" value="5" /> HoneyGlazed ×5</label><br />
+    <label><input type="checkbox" value="5" /> Plasma ×5</label><br />
+    <label><input type="checkbox" value="5" /> Heavenly ×5</label><br />
+    <label><input type="checkbox" value="10" /> Cooked ×10</label><br />
+    <label><input type="checkbox" value="25" /> Zombified ×25</label><br />
+    <label><input type="checkbox" value="25" /> Molten ×25</label><br />
+    <label><input type="checkbox" value="100" /> Shocked ×100</label><br />
+    <label><input type="checkbox" value="120" /> Celestial ×120</label><br />
+    <label><input type="checkbox" value="125" /> Disco ×125</label><br />
+    <label><input type="checkbox" value="125" /> Meteoric ×125</label><br />
+    <label><input type="checkbox" value="135" /> Voidtouched ×135</label><br />
+    <label><input type="checkbox" value="150" /> Dawnbound ×150</label><br />
+  </fieldset>
+  <br />
 
   <button onclick="calculate()">Calculate!</button>
   <h2 id="result">Total Value: ₱0</h2>
+
+  <footer>by Audacious7</footer>
 
   <script>
     function updatePrice() {
@@ -178,17 +191,18 @@
     }
 
     function calculate() {
-      const base = parseFloat(document.getElementById('basePrice').value);
-      const weight = parseFloat(document.getElementById('weight').value);
+      const base = parseFloat(document.getElementById("basePrice").value);
+      const weight = parseFloat(document.getElementById("weight").value);
       let multiplier = 1;
 
-      document.querySelectorAll('input[type=checkbox]').forEach(cb => {
-        if(cb.checked) multiplier *= Number(cb.value);
+      document.querySelectorAll('input[type=checkbox]').forEach((cb) => {
+        if (cb.checked) multiplier *= Number(cb.value);
       });
 
       const total = base * weight * multiplier;
-      document.getElementById('result').textContent =
-        `Total Value: ₱${total.toLocaleString()} (×${multiplier} multiplier)`;
+      document.getElementById(
+        "result"
+      ).textContent = `Total Value: ₱${total.toLocaleString()} (×${multiplier} multiplier)`;
     }
 
     function changeTheme(themeName) {
